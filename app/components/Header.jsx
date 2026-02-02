@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Menu, X } from "lucide-react";
-
+import { useRouter } from "next/navigation";
 export function Header() {
+  const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -38,6 +39,14 @@ export function Header() {
             >
               Process
             </a>
+            <button
+              className="text-sm text-foreground/70 hover:text-primary transition-colors"
+              onClick={async () => {
+                router.replace("/priceCalculator");
+              }}
+            >
+              Prisräknare
+            </button>
             <a
               href="/#kontakt"
               className="text-sm text-foreground/70 hover:text-primary transition-colors"
@@ -48,7 +57,12 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Button className="bg-primary hover:bg-secondary transition-all shadow-lg">
+            <Button
+              onClick={async () => {
+                router.replace("/priceCalculator");
+              }}
+              className="bg-primary hover:bg-secondary transition-all shadow-lg"
+            >
               Pris
             </Button>
           </div>
