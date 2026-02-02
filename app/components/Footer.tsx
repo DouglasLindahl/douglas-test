@@ -26,19 +26,22 @@ export function Footer() {
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
+                href="https://www.facebook.com/Uppsikt.se/"
+                target="_blank"
                 className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.instagram.com/uppsikt/?igshid=MzRlODBiNWFlZA%3D%3D"
+                target="_blank"
                 className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors"
               >
                 <Instagram className="w-5 h-5" />
               </a>
               <a
-                href="#"
+                href="https://www.linkedin.com/company/uppsikt/"
+                target="_blank"
                 className="w-10 h-10 bg-white/10 hover:bg-white/20 rounded-lg flex items-center justify-center transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
@@ -92,29 +95,10 @@ export function Footer() {
                   Om Uppsikt
                 </a>
               </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Vår filosofi
-                </a>
-              </li>
+
               <li>
                 <a href="#" className="hover:text-white transition-colors">
                   Teamet
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Karriär
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Blogg
-                </a>
-              </li>
-              <li>
-                <a href="#" className="hover:text-white transition-colors">
-                  Press
                 </a>
               </li>
             </ul>
@@ -125,19 +109,12 @@ export function Footer() {
             <h4 className="text-lg mb-6">Kontakt</h4>
             <ul className="space-y-4 text-sm text-white/70">
               <li className="flex items-start gap-3">
-                <MapPin className="w-5 h-5 flex-shrink-0 mt-0.5" />
-                <span>
-                  Storgatan 1<br />
-                  114 55 Stockholm
-                </span>
-              </li>
-              <li className="flex items-start gap-3">
                 <Phone className="w-5 h-5 flex-shrink-0 mt-0.5" />
                 <a
-                  href="tel:+46000000000"
+                  href="tel:+46760 17 69 60"
                   className="hover:text-white transition-colors"
                 >
-                  +46 (0)00 000 00 00
+                  +46 760 17 69 60
                 </a>
               </li>
               <li className="flex items-start gap-3">
@@ -154,19 +131,8 @@ export function Footer() {
         </div>
 
         <div className="pt-8 border-t border-white/10">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-white/60">
+          <div className="flex flex-col md:flex-row justify-center items-center gap-4 text-sm text-white/60">
             <p>© 2026 Uppsikt AB. Alla rättigheter förbehållna.</p>
-            <div className="flex gap-6">
-              <a href="#" className="hover:text-white transition-colors">
-                Integritetspolicy
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                Användarvillkor
-              </a>
-              <a href="#" className="hover:text-white transition-colors">
-                Cookies
-              </a>
-            </div>
           </div>
         </div>
       </div>

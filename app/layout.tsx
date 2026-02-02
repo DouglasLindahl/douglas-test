@@ -13,16 +13,16 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kloka Siffror",
-  description: "Kloka Siffror",
+  title: "Uppsikt",
+  description: "Uppsikt",
   openGraph: {
-    title: "Kloka Siffror",
-    description: "Kloka Siffror",
-    url: "https://klokasiffror.se",
-    siteName: "Kloka Siffror",
+    title: "Uppsikt",
+    description: "Uppsikt",
+    url: "https://uppsikt.se",
+    siteName: "Uppsikt",
     images: [
       {
-        url: "https://klokasiffror.se/klokasiffror-logo-mark.png",
+        url: "https://klokasiffror.se/favicon.png",
         width: 1200,
         height: 630,
         alt: "Preview image",

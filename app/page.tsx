@@ -1,22 +1,21 @@
 "use client";
 import { Header } from "@/app/components/Header";
-import { Hero } from "@/app/components/Hero";
-import { Services } from "@/app/components/Services";
-import { About } from "@/app/components/About";
-import { Process } from "@/app/components/Process";
-import { CTA } from "@/app/components/CTA";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Footer } from "@/app/components/Footer";
+import { HomePage } from "./pages/HomePage";
+import { PriceCalculatorPage } from "./pages/PriceCalculatorPage";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <Hero />
-      <Services />
-      <About />
-      <Process />
-      <CTA />
-      <Footer />
-    </div>
+    <Router>
+      <div className="min-h-screen">
+        <Header />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/priskalkylator" element={<PriceCalculatorPage />} />
+        </Routes>
+        <Footer />
+      </div>
+    </Router>
   );
 }

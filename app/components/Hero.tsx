@@ -34,27 +34,33 @@ export function Hero() {
 
           {/* Subheading */}
           <p className="text-xl md:text-2xl text-foreground/60 max-w-2xl mx-auto leading-relaxed">
-            Professionell fastighetsskötsel med en personlig touch. Vi tar hand
-            om allt – från regelbundna inspektioner till akuta problem.
+            Oavsett om du bor året runt eller bara ibland – vi ser till att din
+            fastighet är i trygga händer. Med Uppsikt får du en helhetslösning
+            för tillsyn, skötsel och service – anpassad efter dina behov, din
+            plats, din livsstil.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
-            <Button
-              size="lg"
-              className="bg-primary hover:bg-secondary group shadow-xl"
-            >
-              Kom igång
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-primary/20 hover:bg-white/50 group"
-            >
-              <Play className="mr-2 w-5 h-5" />
-              Se hur det fungerar
-            </Button>
+            <a href="#kontakt">
+              <Button
+                size="lg"
+                className="bg-primary hover:bg-secondary group shadow-xl"
+              >
+                Kom igång
+                <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </a>
+            <a href="#process">
+              <Button
+                size="lg"
+                variant="outline"
+                className="border-primary/20 hover:bg-white/50 group"
+              >
+                <Play className="mr-2 w-5 h-5" />
+                Se hur det fungerar
+              </Button>
+            </a>
           </div>
 
           {/* Stats */}
@@ -72,13 +78,6 @@ export function Hero() {
               <div className="text-sm text-foreground/60">År i branschen</div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20">
-        <div className="w-6 h-10 border-2 border-primary/30 rounded-full flex items-start justify-center p-2">
-          <div className="w-1 h-2 bg-primary rounded-full animate-bounce"></div>
         </div>
       </div>
     </section>

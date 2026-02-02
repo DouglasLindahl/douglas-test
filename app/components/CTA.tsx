@@ -26,23 +26,6 @@ export function CTA() {
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button
-              size="lg"
-              className="bg-white text-primary hover:bg-accent hover:text-primary group shadow-xl"
-            >
-              Boka gratis konsultation
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white/10"
-            >
-              Kontakta oss
-            </Button>
-          </div>
-
           {/* Contact cards */}
           <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
             <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-6 text-center">
@@ -51,10 +34,10 @@ export function CTA() {
               </div>
               <div className="text-sm text-white/70 mb-2">Ring oss</div>
               <a
-                href="tel:+46000000000"
+                href="tel:+46760176960"
                 className="text-lg text-white hover:underline"
               >
-                +46 (0)00 000 00 00
+                +46 760 17 69 60
               </a>
             </div>
 

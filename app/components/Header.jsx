@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -12,14 +13,10 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center space-x-3">
             <div className="relative">
-              <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full"></div>
-              <div className="relative w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-xl flex items-center justify-center shadow-lg">
-                <span className="text-white text-xl">U</span>
+              <div className="relative w-12 h-12 ">
+                <img src="favicon.png" alt="" />
               </div>
             </div>
-            <span className="text-2xl tracking-tight text-primary">
-              UPPSIKT
-            </span>
           </div>
 
           {/* Desktop Navigation */}
@@ -42,6 +39,12 @@ export function Header() {
             >
               Process
             </a>
+            <Link
+              to="/priskalkylator"
+              className={`text-sm transition-colors ${location.pathname === "/priskalkylator" ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
+            >
+              Priskalkylator
+            </Link>
             <a
               href="#kontakt"
               className="text-sm text-foreground/70 hover:text-primary transition-colors"
@@ -53,7 +56,7 @@ export function Header() {
           {/* CTA Button */}
           <div className="hidden lg:block">
             <Button className="bg-primary hover:bg-secondary transition-all shadow-lg">
-              Få offert
+              Pris
             </Button>
           </div>
 
