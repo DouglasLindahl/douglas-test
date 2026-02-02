@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "Uppsikt",
     images: [
       {
-        url: "https://klokasiffror.se/favicon.png",
+        url: "https://uppsikt.se/favicon.png",
         width: 1200,
         height: 630,
         alt: "Preview image",
