@@ -4,18 +4,22 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Footer } from "@/app/components/Footer";
 import { HomePage } from "./pages/HomePage";
 import { PriceCalculatorPage } from "./pages/PriceCalculatorPage";
+import { CTA } from "./components/CTA";
+import { Hero } from "./components/Hero";
+import { Services } from "./components/Services";
+import { About } from "./components/About";
+import { Process } from "./components/Process";
 
 export default function Home() {
   return (
-    <Router>
-      <div className="min-h-screen">
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/priskalkylator" element={<PriceCalculatorPage />} />
-        </Routes>
-        <Footer />
-      </div>
-    </Router>
+    <>
+      <Header />
+      <Hero />
+      <Services />
+      <About />
+      <Process />
+      <CTA />
+      <Footer />
+    </>
   );
 }

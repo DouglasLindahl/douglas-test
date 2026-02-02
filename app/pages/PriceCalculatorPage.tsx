@@ -1,5 +1,7 @@
+"use client";
+
 import { useState } from "react";
-import { Calculator, Check, ArrowRight } from "lucide-react";
+import { Calculator, ArrowRight } from "lucide-react";
 import { Button } from "@/app/components/ui/button";
 import { Label } from "@/app/components/ui/label";
 import { Input } from "@/app/components/ui/input";
@@ -11,82 +13,123 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { Card, CardContent } from "@/app/components/ui/card";
+import { CTA } from "../components/CTA";
 
-// Price rates per square meter per month for different service categories
-const serviceRates = {
-  basic: {
-    name: "Grundpaket",
-    description: "Månadsvisa inspektioner och rapporter",
-    pricePerSqm: 15,
-    features: [
-      "Månadsvisa inspektioner",
-      "Digitala rapporter med foton",
-      "Säkerhetskontroller",
-      "En dedikerad kontaktperson",
-    ],
+/* =======================
+   TYPES
+======================= */
+
+type City = "sotenäs" | "göteborg" | "stockholm";
+type Service = "hemstad" | "flyttstad" | "fonsterputs" | "custom";
+
+/* =======================
+   PRICING DATA
+======================= */
+
+const hemstadData = [
+  { from: 0, to: 50, time: 1 },
+  { from: 51, to: 75, time: 1.5 },
+  { from: 76, to: 100, time: 2.5 },
+  { from: 101, to: 125, time: 3.5 },
+  { from: 126, to: 150, time: 4.5 },
+  { from: 151, to: 200, time: 5.5 },
+  { from: 201, to: 250, time: 7 },
+  { from: 251, to: 300, time: 8 },
+];
+
+const flyttstadData = [
+  { from: 0, to: 45, time: 8 },
+  { from: 46, to: 60, time: 10 },
+  { from: 61, to: 80, time: 14 },
+  { from: 81, to: 100, time: 17 },
+  { from: 101, to: 150, time: 25 },
+  { from: 151, to: 200, time: 33 },
+  { from: 201, to: 250, time: 40 },
+  { from: 251, to: 300, time: 48 },
+];
+
+const TIMPRIS = {
+  sotenäs: {
+    hemstad: 625,
+    flyttstad: 750,
+    fonsterputs: 300,
   },
-  standard: {
-    name: "Standardpaket",
-    description: "Inspektioner + regelbunden städning",
-    pricePerSqm: 35,
-    features: [
-      "Allt i Grundpaket",
-      "Städning varannan vecka",
-      "Fönsterputsning 2 gånger/år",
-      "Mindre underhållsarbeten",
-    ],
+  göteborg: {
+    hemstad: 725,
+    flyttstad: 850,
+    fonsterputs: 400,
   },
-  premium: {
-    name: "Premiumpaket",
-    description: "Fullservice fastighetsskötsel",
-    pricePerSqm: 60,
-    features: [
-      "Allt i Standardpaket",
-      "Veckovis städning",
-      "Komplett trädgårdsskötsel",
-      "Vinterberedskap och snöröjning",
-      "Koordinering av alla hantverkare",
-      "24/7 akutservice",
-    ],
+  stockholm: {
+    hemstad: 825,
+    flyttstad: 950,
+    fonsterputs: 500,
   },
-  custom: {
-    name: "Anpassat paket",
-    description: "Skräddarsydd lösning efter dina behov",
-    pricePerSqm: 0,
-    features: [
-      "Vi skapar ett paket som passar dig perfekt",
-      "Flexibel servicenivå",
-      "Kontakta oss för offert",
-    ],
-  },
+} as const;
+
+/* =======================
+   HELPERS
+======================= */
+
+function getTimeFromSqm(
+  sqm: number,
+  table: { from: number; to: number; time: number }[],
+) {
+  return table.find((row) => sqm >= row.from && sqm <= row.to)?.time ?? null;
+}
+
+const serviceInfo: Record<Service, string> = {
+  hemstad:
+    "Hemstäd beräknas utifrån bostadens storlek och den tid som krävs för ett grundligt veckostäd.",
+  flyttstad:
+    "Flyttstäd är mer omfattande och inkluderar hela bostaden enligt mäklarstandard.",
+  fonsterputs:
+    "Fönsterputs prissätts per fönster och inkluderar putsning av glasets alla sidor.",
+  custom: "Ett anpassat paket skräddarsys helt efter dina behov och önskemål.",
 };
 
+/* =======================
+   COMPONENT
+======================= */
+
 export function PriceCalculatorPage() {
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [squareMeters, setSquareMeters] = useState<string>("");
-  const [calculatedPrice, setCalculatedPrice] = useState<number | null>(null);
+  const [city, setCity] = useState<City | "">("");
+  const [service, setService] = useState<Service | "">("");
+  const [inputValue, setInputValue] = useState("");
+  const [price, setPrice] = useState<number | null>(null);
 
   const handleCalculate = () => {
-    if (selectedCategory && squareMeters && selectedCategory !== "custom") {
-      const sqm = parseFloat(squareMeters);
-      if (!isNaN(sqm) && sqm > 0) {
-        const rate =
-          serviceRates[selectedCategory as keyof typeof serviceRates]
-            .pricePerSqm;
-        const price = rate * sqm;
-        setCalculatedPrice(price);
-      }
+    if (!city || !service || service === "custom") return;
+
+    const value = Number(inputValue);
+    if (isNaN(value) || value <= 0) return;
+
+    let total = 0;
+
+    if (service === "fonsterputs") {
+      total = value * TIMPRIS[city].fonsterputs;
+    } else {
+      const time =
+        service === "hemstad"
+          ? getTimeFromSqm(value, hemstadData)
+          : getTimeFromSqm(value, flyttstadData);
+
+      if (!time) return;
+
+      total = time * TIMPRIS[city][service];
     }
+
+    setPrice(Math.round(total));
   };
 
-  const selectedService = selectedCategory
-    ? serviceRates[selectedCategory as keyof typeof serviceRates]
-    : null;
+  const rutPrice = price ? Math.round(price / 2) : null;
+
+  /* =======================
+     RENDER
+  ======================= */
 
   return (
     <div className="min-h-screen pt-32 pb-20 bg-gradient-to-b from-accent/30 to-white">
       <div className="container mx-auto px-6 lg:px-12">
-        {/* Header */}
         <div className="max-w-3xl mx-auto text-center mb-16">
           <div className="inline-flex items-center gap-2 bg-white px-5 py-2 rounded-full border border-primary/20 shadow-sm mb-6">
             <Calculator className="w-4 h-4 text-secondary" />
@@ -100,192 +143,99 @@ export function PriceCalculatorPage() {
             direkt prisuppskattning
           </p>
         </div>
-
         <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-8">
-          {/* Calculator Form */}
-          <Card className="border-primary/10">
-            <CardContent className="p-8">
-              <div className="space-y-8">
-                <div className="space-y-3">
-                  <Label htmlFor="category">Välj tjänstekategori</Label>
-                  <Select
-                    onValueChange={(value: any) => {
-                      setSelectedCategory(value);
-                      setCalculatedPrice(null);
-                    }}
-                  >
-                    <SelectTrigger id="category" className="h-12">
-                      <SelectValue placeholder="Välj ett paket..." />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="basic">Grundpaket</SelectItem>
-                      <SelectItem value="standard">Standardpaket</SelectItem>
-                      <SelectItem value="premium">Premiumpaket</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+          {/* LEFT */}
+          <Card>
+            <CardContent className="p-8 space-y-6">
+              <div>
+                <Label>Välj kommun</Label>
+                <Select onValueChange={(v: City) => setCity(v)}>
+                  <SelectTrigger className="h-12">
+                    <SelectValue placeholder="Välj kommun..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="sotenäs">Sotenäs</SelectItem>
+                    <SelectItem value="göteborg">Göteborg</SelectItem>
+                    <SelectItem value="stockholm">Stockholm</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
 
-                <div className="space-y-3">
-                  <Label htmlFor="sqm">Fastighetens storlek (kvm)</Label>
+              <div>
+                <Label>Välj tjänst</Label>
+                <Select onValueChange={(v: Service) => setService(v)}>
+                  <SelectTrigger className="h-12">
+                    <SelectValue placeholder="Välj tjänst..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="hemstad">Hemstäd</SelectItem>
+                    <SelectItem value="flyttstad">Flyttstäd</SelectItem>
+                    <SelectItem value="fonsterputs">Fönsterputs</SelectItem>
+                    <SelectItem value="custom">Anpassat paket</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {service && service !== "custom" && (
+                <div>
+                  <Label>
+                    {service === "fonsterputs"
+                      ? "Antal fönster"
+                      : "Fastighetens storlek (kvm)"}
+                  </Label>
                   <Input
-                    id="sqm"
                     type="number"
-                    placeholder="T.ex. 150"
-                    value={squareMeters}
-                    onChange={(e) => {
-                      setSquareMeters(e.target.value);
-                      setCalculatedPrice(null);
-                    }}
-                    className="h-12"
-                    min="0"
+                    min="1"
+                    value={inputValue}
+                    onChange={(e) => setInputValue(e.target.value)}
+                    placeholder={
+                      service === "fonsterputs" ? "T.ex. 12" : "T.ex. 120"
+                    }
                   />
                 </div>
+              )}
 
-                {selectedCategory !== "custom" ? (
-                  <Button
-                    onClick={handleCalculate}
-                    disabled={!selectedCategory || !squareMeters}
-                    className="w-full h-12 bg-primary hover:bg-secondary group"
-                  >
-                    Beräkna pris
-                    <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                ) : (
-                  <Button className="w-full h-12 bg-primary hover:bg-secondary">
-                    Kontakta oss för offert
-                  </Button>
-                )}
-
-                {/* Price Result */}
-                {calculatedPrice !== null && (
-                  <div className="bg-gradient-to-br from-primary to-secondary text-white rounded-2xl p-8 text-center space-y-4">
-                    <div className="text-sm opacity-90">
-                      Uppskattat månadspris
-                    </div>
-                    <div className="text-5xl">
-                      {calculatedPrice.toLocaleString("sv-SE")} kr
-                    </div>
-                    <div className="text-sm opacity-90">per månad</div>
-                    <div className="pt-4 border-t border-white/20 text-sm">
-                      <p className="opacity-90">
-                        Detta är en uppskattning. Kontakta oss för en exakt
-                        offert baserad på dina specifika behov.
-                      </p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Service Details */}
-          <div className="space-y-6">
-            {selectedService ? (
-              <Card className="border-primary/10">
-                <CardContent className="p-8 space-y-6">
-                  <div className="space-y-2">
-                    <h3 className="text-2xl text-primary">
-                      {selectedService.name}
-                    </h3>
-                    <p className="text-foreground/60">
-                      {selectedService.description}
-                    </p>
-                    {selectedService.pricePerSqm > 0 && (
-                      <div className="pt-2">
-                        <span className="text-3xl text-secondary">
-                          {selectedService.pricePerSqm} kr
-                        </span>
-                        <span className="text-foreground/60">
-                          {" "}
-                          / kvm / månad
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-3 pt-4">
-                    <h4 className="text-foreground/80">
-                      Inkluderat i paketet:
-                    </h4>
-                    {selectedService.features.map((feature, index) => (
-                      <div key={index} className="flex items-start gap-3">
-                        <div className="w-5 h-5 rounded-full bg-secondary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Check className="w-3 h-3 text-secondary" />
-                        </div>
-                        <span className="text-sm text-foreground/70">
-                          {feature}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            ) : (
-              <Card className="border-primary/10">
-                <CardContent className="p-8 text-center space-y-4">
-                  <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center mx-auto">
-                    <Calculator className="w-8 h-8 text-secondary" />
-                  </div>
-                  <h3 className="text-xl text-primary">Välj ett paket</h3>
-                  <p className="text-foreground/60">
-                    Börja med att välja ett tjänstepaket för att se detaljer och
-                    beräkna ditt pris
-                  </p>
-                </CardContent>
-              </Card>
-            )}
-
-            {/* Info Box */}
-            <Card className="border-primary/10 bg-accent/50">
-              <CardContent className="p-6 space-y-3">
-                <h4 className="text-primary">Viktigt att veta</h4>
-                <ul className="space-y-2 text-sm text-foreground/70">
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-1">•</span>
-                    <span>Priserna är baserade på genomsnittlig fastighet</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-1">•</span>
-                    <span>Ingen bindningstid eller uppsägningstid</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-1">•</span>
-                    <span>Första konsultationen är alltid kostnadsfri</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-secondary mt-1">•</span>
-                    <span>Vi kan anpassa alla paket efter dina behov</span>
-                  </li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* CTA Section */}
-        <div className="max-w-3xl mx-auto mt-20 text-center">
-          <Card className="border-primary/10 bg-white">
-            <CardContent className="p-12 space-y-6">
-              <h3 className="text-3xl text-primary">Redo att komma igång?</h3>
-              <p className="text-lg text-foreground/60">
-                Boka en kostnadsfri konsultation så hjälper vi dig hitta det
-                perfekta paketet för din fastighet
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Button size="lg" className="bg-primary hover:bg-secondary">
-                  Boka konsultation
-                </Button>
+              {service !== "custom" ? (
                 <Button
-                  size="lg"
-                  variant="outline"
-                  className="border-primary/20"
+                  onClick={handleCalculate}
+                  disabled={!city || !service || !inputValue}
+                  className="w-full h-12"
                 >
-                  Kontakta oss
+                  Beräkna pris
+                  <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-              </div>
+              ) : (
+                <Button className="w-full h-12">Kontakta oss för offert</Button>
+              )}
+
+              {price !== null && (
+                <div className="bg-primary text-white rounded-xl p-6 text-center space-y-2">
+                  <div className="text-sm opacity-80">Uppskattat pris</div>
+                  <div className="text-4xl font-bold">
+                    {price.toLocaleString("sv-SE")} kr
+                  </div>
+                  <div className="text-sm opacity-80">
+                    Efter RUT-avdrag:{" "}
+                    <strong>{rutPrice?.toLocaleString("sv-SE")} kr</strong>
+                  </div>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* RIGHT */}
+          <Card>
+            <CardContent className="p-8 space-y-4 text-center">
+              <Calculator className="w-10 h-10 mx-auto text-secondary" />
+              <p className="text-muted-foreground">
+                {service
+                  ? serviceInfo[service]
+                  : "Välj en tjänst för mer information."}
+              </p>
             </CardContent>
           </Card>
         </div>
+        {/* CTA Section */}
       </div>
     </div>
   );

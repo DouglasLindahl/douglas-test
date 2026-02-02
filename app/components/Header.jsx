@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/app/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -22,31 +21,25 @@ export function Header() {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-10">
             <a
-              href="#tjanster"
+              href="/#tjanster"
               className="text-sm text-foreground/70 hover:text-primary transition-colors"
             >
               Tjänster
             </a>
             <a
-              href="#om"
+              href="/#om"
               className="text-sm text-foreground/70 hover:text-primary transition-colors"
             >
               Om oss
             </a>
             <a
-              href="#process"
+              href="/#process"
               className="text-sm text-foreground/70 hover:text-primary transition-colors"
             >
               Process
             </a>
-            <Link
-              to="/priskalkylator"
-              className={`text-sm transition-colors ${location.pathname === "/priskalkylator" ? "text-primary" : "text-foreground/70 hover:text-primary"}`}
-            >
-              Priskalkylator
-            </Link>
             <a
-              href="#kontakt"
+              href="/#kontakt"
               className="text-sm text-foreground/70 hover:text-primary transition-colors"
             >
               Kontakt

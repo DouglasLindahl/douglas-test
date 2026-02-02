@@ -11,7 +11,6 @@ export function HomePage() {
       <Services />
       <About />
       <Process />
-      <CTA />
     </>
   );
 }
