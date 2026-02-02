@@ -14,21 +14,9 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Uppsikt",
-  description: "Uppsikt",
-  openGraph: {
-    title: "Uppsikt",
-    description: "Uppsikt",
-    url: "https://uppsikt.se",
-    siteName: "Uppsikt",
-    images: [
-      {
-        url: "https://uppsikt.se/favicon.png",
-        width: 1200,
-        height: 630,
-        alt: "Preview image",
-      },
-    ],
-    type: "website",
+  description: "helhetslösning för tillsyn, skötsel och service",
+  icons: {
+    icon: "/favicon.png",
   },
 };
 
